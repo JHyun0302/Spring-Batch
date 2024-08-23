@@ -1,0 +1,67 @@
+package com.example.springbatch.controller;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersBuilder;
+import org.springframework.batch.core.configuration.JobRegistry;
+import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequiredArgsConstructor
+public class MainController {
+
+    private final JobLauncher jobLauncher;
+
+    private final JobRegistry jobRegistry;
+
+    /**
+     * 컨트롤러에서 실행
+     * “/first” 경로로 요청이 들어온다면, 배치 1을 실행하도록 설정
+     */
+    @GetMapping("/first")
+    public String firstApi(@RequestParam("value") String value) throws Exception {
+
+        JobParameters jobParameters = new JobParametersBuilder()
+                .addString("date", value)
+                .toJobParameters();
+
+        jobLauncher.run(jobRegistry.getJob("firstJob"), jobParameters);
+        return "ok";
+    }
+
+    @GetMapping("/second")
+    public String secondApi(@RequestParam("value") String value) throws Exception {
+
+        JobParameters jobParameters = new JobParametersBuilder()
+                .addString("date", value)
+                .toJobParameters();
+
+        jobLauncher.run(jobRegistry.getJob("secondJob"), jobParameters);
+        return "ok";
+    }
+
+    @GetMapping("/fourth")
+    public String fourthApi(@RequestParam("value") String value) throws Exception {
+
+        JobParameters jobParameters = new JobParametersBuilder()
+                .addString("date", value)
+                .toJobParameters();
+
+        jobLauncher.run(jobRegistry.getJob("fourthJob"), jobParameters);
+        return "ok";
+    }
+
+    @GetMapping("/fifth")
+    public String fifthApi(@RequestParam("value") String value) throws Exception {
+
+        JobParameters jobParameters = new JobParametersBuilder()
+                .addString("date", value)
+                .toJobParameters();
+
+        jobLauncher.run(jobRegistry.getJob("fifthJob"), jobParameters);
+        return "ok";
+    }
+}
